@@ -1,0 +1,78 @@
+#django is a web framework, - set of tools designed to build interactive websites.
+# Literally going to keep a journal of topics users are interested in and be able to store those entries of topics.
+# All these are going to be done in a website called 'Learning Log'.
+# Home page should invite users to register or log in.
+
+1.Virtual environment is a clean private workspace for one project so nothing breaks down. 
+Prevents conflicts , enables easy workflow. 
+package isolation
+project specific
+
+2.Global Environment is a general workspace for any project.
+Easy to break down
+No package isolation
+system-wide
+
+a. To activate virtual environment:
+source venv/Scripts/activate
+b. To deactivate back to global env:
+deactivate 
+
+ls: command To list files in the current directory(items the folder constitutes)
+rmdir : check if the folder is empty
+rm : remove the folder (rm -rf ....)
+-r : recursive (remove folder +contents)
+sqlite;is database of on file that manages the database of any project of apps
+localhost (port): server that processes your request on a system, prevents people from seeing pages your developing
+. in creating a django project; deploys the app to the server by a directory structure.
+Database storage system that keeps plethora of information permanently 
+
+
+Mode            LastWriteTime
+----            -------------
+d-----     1/5/2026   9:37 AM
+d-----     1/5/2026   1:57 PM
+d-----     1/5/2026   1:06 PM
+-a----     1/6/2026  11:20 AM
+-a----     1/5/2026   1:55 PM 
+*These are directory folders
+
+db.sqlite3 - database
+manage.py - project root
+ll_env -virtual environment
+learning_log - django project package
+
+Set-ExecutionPolicy command that all scripts to run on your computer in the terminal.
+Prevents the computer from running malicious scripts.
+
+makemigrations: command that tells Django how to modify the database and store info of an app we created along the line
+
+Superuser is a user that has all privileges to see plethora of data of other users on the site. Registered users have trust in administrators to keep such info discreet.In creating a password in terminal, there no echo input is shut down to avoid shoulder surfing, terminal is not a GUI. Terminals are text streams and not a visual surface.
+
+Django stores passwords as hashes, even the administrators can't be able to access it. Good to prevent attackers from reading original passwords.
+Hashes consists of [Algorithm, Number of Iterations, Salt, hashed password]
+
+Foreign key is a database term that connects each entry to a specific topic/ a key that links between each two pieces of data
+
+After you add a model, you migrate it to the database.[for permanent storage]
+
+Django shell in the terminal useful for testing & troubleshooting projects
+
+url = destinations (address the users types in the browser)
+path = directions ( functions that Django matches the URL)
+parts of a URL : Scheme, Domain, Port, Path, Query. SDPPQ
+Matching of urls is the succesful comparison of the path requested and the (url.py) file and extraction 
+Macthing of url consist of static and Dynamic.
+After the linked view is called.
+Over time when you use path() function in place of url , there is no need for raw string (r) and regex symbols like $, ^, +, \d
+Can only be used when you use re-path.  
+This is all because path is not regex-based.
+Regex is a pattern for matching text. (Regular Expression)
+Raw string takes the codes for what ever it is. It doesn't autocorrect it.
+Template is the structure of the web page
+
+Parent template needed for making websites with lot of pages easier. Pass the {% extend %} tag on the other child templates, so you don't have to do it continually create new ones.
+Child template needed for could inherit from the parent template and write new stuff in that page using the {% block content%} and {% endblock content%} tags.
+Context is a dictionary that the key is what we will  use in the template and the value is the data we will send to the template.
+<ul> & </ul> means the bulleted item in a list
+<li> & <li/> means listed items.
