@@ -1,6 +1,88 @@
-<p> 
-    <a href = " {% url 'learning_logs: index' %}" >Learning Log</a> -
-    <a href = "{% url 'learning_logs: topics' %}"> Topics </a>
-</p>
 
-{% block content %} {% endblock content %} 
+{% load django_bootstrap5 %} <!--load a collection of template tags available in django-bootstrap5.-->
+
+<!DOCTYPE html> <!--the file is declared as an html document.-->
+<html lang="en"> <!--such declaration is written in english. -->
+    <head> <!--head of the html file. The head doesn't say anything it just displays the browser page correctly.-->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewpoint" content="width=device-width, initial-scale=1">
+
+        <title>Learning Log</title> <!--Learning log will be displayed in the title bar when the page is opened as the title.-->
+
+        {% bootstrap_css %} <!--want the page to be interactive as possible so we includes all the bootstrap style files-->
+        {% bootstrap_javascript %}
+
+
+    </head><!--closing tag of the header.-->
+
+
+    <body><!-- Second part of an html file is the body tag-->
+<!-- contains contents the users will see on the page.-->
+        <!-- Static navbar-->
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+<!--nav elements contains the navigation links section of the page.-->
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed"
+                        data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false"  aria-controls="navbar">
+                    </button><!-- a button will appear so users can collapse, widen and narrow pages on the site. All these will appear in a dropdown list. -->
+                    <a class="navbar-brand" href="{% url 'learning_logs:index' %}">
+                        Learning Log</a><!--the name of the project is to the far left and a link is created for the homepage.-->
+                
+                </div>
+                
+                <div id="navbar" class="navbar-collapse collapse"><!--define set of links that lets the user navigate the site.-->
+                    <ul class="nav navbar-nav">
+                       <li><a href="{% url 'learning_logs:topics' %}">Topics</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if user.is_authenticated %}
+                            <li><a>Hello, {{ user.username }}.</a></li>
+                            <li><a href="{% url 'users:logout' %}">log out</a></li>
+                        {% else %}
+                               <li><a href="{% url 'users:register' %}">register</a></li>
+                               <li><a href="{% url 'users:login' %}">log in</a></li>
+                               {% endif %}
+                            <!-- create second list of navigation list, the set of links "navbar-right" selector appears on the right edge of the navigation bar. links to register, login, logout, are here.-->
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+
+        <div class="container"> <!-- this div consist of two elements, the headerblock and the content block.-->
+
+            <div class="page-header"> <!-- the header block tells the user what they can do on the page. -->
+                {% block header %}{% endblock header %}
+
+            </div>
+
+            <div>
+                {% block content %}{% endblock content %}
+
+            </div>
+
+            
+        
+        
+            
+        </div> <!--/container-->
+
+    
+
+
+            
+                    
+
+
+
+    </body>
+</html>
+
+
+
+
+

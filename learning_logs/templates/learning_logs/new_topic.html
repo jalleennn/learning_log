@@ -1,0 +1,21 @@
+{% extends "learning_logs/base.html"%} <!--has the base structure as the rest of the pages-->
+{% load django_bootstrap5 %}<!--we load bootstrap5 to be able to style the site.-->
+
+{% block header %}<!--add the header block telling users to add new topic.-->
+   <h2>Add a new topic:</h2>
+{% endblock header %}
+
+{% block content %}
+   <form action="{% url 'learning_logs:new_topic' %}" method='post'
+        class="form">
+
+      {% csrf_token %}
+      {% bootstrap_form form %}<!--create a form so the user enters the topic into the site.-->
+
+      
+         <button type="submit" class="btn btn-primary">add topic</button><!--button submit to store send and store the topic.-->
+      
+
+   </form>
+
+{% endblock content %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User # import the User model from Django's auth module.
 
 # Create your models here.
 
@@ -6,6 +7,7 @@ class Topic(models.Model): # creates a class called Topic that inherits from par
     """A topic the user is learning about."""
     text = models.CharField(max_length= 200) #CharField is a piece of data that made up of text or characters.
     date_added = models.DateTimeField(auto_now_add = True) #DateTimeField, a piece of data that records a date and Time.
+    owner = models.ForeignKey(User, on_delete=models.CASCADE) # we add a foreign key attribute to the Topic module to link each topic to a specific user.
 # Using the CharField attribute, tells Django how much space reserve in the database, 
 # we gave it 200 characters.
 # auto_add_now sets the attributes telling Django to set time and date to the current moment.

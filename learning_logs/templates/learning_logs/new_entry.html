@@ -1,0 +1,17 @@
+{% extends "learning_logs/base.html" %}
+
+{% block content %}
+
+<p><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></p>
+<!--Shows the topic at the top of the page so the user knows what topic to align the entry with.-->
+<!--has a link also that can take the user back to the mian topic page.-->
+
+<p>Add a new entry:</p>
+<form action="{% url 'learning_logs:new_entry' topic.id %}" method='post'> <!-- The form's action argument ahs a neccessary topic id that links each topic to th eentry so it doesn't misalign.-->
+   {% csrf_token %} <!-- this tag prevents intruders from hacking the website through the form.-->
+   {{ from.as_p }} <!-- going to have the important fields in the form and each is going to be in a paragraph.-->
+   <button name='submit'>add entry</button> <!-- has a submit button after the entry has been entered.-->
+
+</form>
+
+{% endblock content %}

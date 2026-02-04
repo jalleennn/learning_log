@@ -1,0 +1,24 @@
+{% extends "learning_logs/base.html" %} <!-- Extends the base.html so the login page will have the same outline pass the rest of the site.-->
+{% load django_bootstrap5 %}<!--load bootstrap 5 tag into the template-->
+
+
+{% block header %}
+   <h2>Log in to your account.</h2><!--define the header explaining what the page is for.-->
+{% endblock header %}
+
+{% block content %}
+
+   <form method="post" action="{% url 'users:login' %}" class="form">
+     {% csrf_token %}
+     {% bootstrap_form form %}
+     
+        <button type="submit" class="btn btn-primary">log in</button>
+     
+
+    <input type="hidden" name="next" value="{% url 'learning_logs:index' %}" />
+   </form>
+{% endblock content %}
+
+
+    
+

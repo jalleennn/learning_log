@@ -1,0 +1,8 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+ll_env/ # tell git to ignore the virtual eenvironment folder.
+_pycache_/ # we don't need to track the compiled python files.
+*.sqlite3 # we don't need to track the database files.
+
+
+
+

@@ -9,7 +9,10 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+from email.policy import default
+import os
+from token import NAME # makes django know where things are on my computer or server, such as the static files.
+import dj_database_url # helps django understand the database heroku gives you.
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,9 +28,11 @@ SECRET_KEY = 'django-insecure-vmw7-cxse(tzu*16)v(_=q1sv37cx#9$v(v7+kflp1c6()f&@0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herohuapp.com', 'localhost', '127.0.0.1']
+# shows the website addresses that can acess my site.
 
-
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True # ensures good security
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,15 +43,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    #Third party apps
+    'django_bootstrap5',
+
     # My apps
     'learning_logs',
-
+    'users',
+    
 ]
 
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -79,12 +89,24 @@ WSGI_APPLICATION = 'learning_log.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+if 'Heroku' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default='sqlite:///db.sqlite3', # fallback database for local development.
+            conn_max_age=600, # keeps database connection open so the site runs faster.
+            ssl_require=True 
+        )
+    
 }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    
+  
 
 
 # Password validation
@@ -122,3 +144,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles' # where django gather all static files before deployment.
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# My settings
+LOGIN_URL = '/users/login'
+# now when an unauthenticated user request for a page protected by the decorator '@login required",
+# Django directs the user to the URL defined by the LOGIN_URL in settings.py

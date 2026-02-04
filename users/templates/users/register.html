@@ -1,0 +1,17 @@
+{% extends "learning_logs/base.html" %} 
+
+{% block content %}
+
+   <form method="post" action="{% url 'users:register' %}">
+      {% csrf_token %}
+      <!--form fields-->
+      {{ form.as_p }}
+
+      <button name="submit">register</button>
+      <input type="hidden" name="next" value="{% url 'learning_logs:index' %}" />
+    </form>
+
+{% endblock content %}
+
+<!-- Aside using the same template structure as the base.html, used the-->
+<!-- as_p method so all the fields will be represented as a paragraph form-->
