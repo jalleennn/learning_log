@@ -1,0 +1,22 @@
+# Python
+*.pyc
+__pycache__/
+
+# Django local files
+db.sqlite3
+*.sqlite3
+.env
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+
+# Static files (if you run collectstatic on Render)
+staticfiles/
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
