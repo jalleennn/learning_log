@@ -12,6 +12,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'), # logout page
     # Registration page
     path('register/', views.register, name='register'),
+    path('new_topic/', views.new_topic, name='new_topic'),
+    path('topics/', views.topics, name='topics'),
 ]
 # creates a url link for the login page using the LoginView class.
 # Since we aren't writing our own views we pass a dictionary telling Django where to find the template for the login page.
