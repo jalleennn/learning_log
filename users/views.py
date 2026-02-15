@@ -6,8 +6,8 @@ from django.contrib.auth import login,logout, authenticate # import the login an
 from django.contrib.auth.forms import UserCreationForm
 #import the UserCreationForm class from django,contrib.auth.forms module to create a user registration from.
 from django.contrib import messages
-from .models import Topic
-from .models import TopicForm
+from learning_logs.models import Topic
+from learning_logs.forms import TopicForm
 
 # Create your views here.
 
