@@ -23,17 +23,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vmw7-cxse(tzu*16)v(_=q1sv37cx#9$v(v7+kflp1c6()f&@0'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.herohuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 # shows the website addresses that can acess my site.
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True # ensures good security
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
+ # ensures good security
 # Application definition
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -89,7 +96,7 @@ WSGI_APPLICATION = 'learning_log.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-if 'Heroku' in os.environ:
+if 'render' in os.environ:
     DATABASES = {
         'default': dj_database_url.config(
             default='sqlite:///db.sqlite3', # fallback database for local development.
@@ -143,11 +150,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles' # where django gather all static files before deployment.
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles") # where django gather all static files before deployment.
+STATIC_URL = '/static/'
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # My settings
 LOGIN_URL = '/users/login'
 # now when an unauthenticated user request for a page protected by the decorator '@login required",
 # Django directs the user to the URL defined by the LOGIN_URL in settings.py
+
+
+
