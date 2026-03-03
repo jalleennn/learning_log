@@ -36,9 +36,18 @@ ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 # Application definition
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+else:
+    SECURE_SSL_REDIRECT =False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+
+
+
+
 
 
 
@@ -152,7 +161,9 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # My settings
-LOGIN_URL = '/users/login'
+LOGIN_URL = 'login'  # URL name, not path
+LOGIN_REDIRECT_URL = 'topics'
+LOGOUT_REDIRECT_URL = 'index'
 # now when an unauthenticated user request for a page protected by the decorator '@login required",
 # Django directs the user to the URL defined by the LOGIN_URL in settings.py
 

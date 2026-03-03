@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from learning_logs.models import Topic
 from learning_logs.forms import TopicForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -36,6 +37,7 @@ def register(request): # the register function checks if the we are responding t
     context = {'form': form}
     return render(request, 'users/register.html', context)
 
+@login_required
 def new_topic(request):
     if request.method == 'POST':
         form = TopicForm(request.POST)
@@ -49,6 +51,7 @@ def new_topic(request):
     return render(request, 'new_topic.html', {'form': form})
 
 # List topics
+@login_required
 def topics(request):
     topics = Topic.objects.filter(owner=request.user).order_by('-date_added')
     return render(request, 'topics.html', {'topics': topics})
