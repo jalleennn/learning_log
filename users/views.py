@@ -29,7 +29,7 @@ def register(request): # the register function checks if the we are responding t
             user = form.save()
             login(request, user)
             messages.success(request, f'Welcome {user.username}! Add your first topic below.')
-            return redirect('new_topic')
+            return redirect('learning_logs:new_topic')
     else:
         # Process completed form.
         form = UserCreationForm() # if POST request we make an instance based on the submitted data.
