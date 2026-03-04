@@ -2,14 +2,14 @@
 
 
 from django.urls import path # import the url function from the main url in the learninng_log project.
-from django.contrib.auth.views import LoginView , LogoutView # import the LoginView class from django.contrib.auth.views module.
+from django.contrib.auth import views as auth_views , LogoutView # import the LoginView class from django.contrib.auth.views module.
 
 from . import views
 
 urlpatterns = [
     # Login page
-    path('login/', LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'), # logout page
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'), # logout page
     # Registration page
     path('register/', views.register, name='register'),
     path('new_topic/', views.new_topic, name='new_topic'),

@@ -1,7 +1,7 @@
 {% extends "learning_logs/base.html" %}
 
 {% block header %}
-   <h1>Topics</h1><!--we add the topic inside the header block-->
+   <h2>Your Topics</h2><!--we add the topic inside the header block-->
 {% endblock header %}
 
 {% block content %}
@@ -11,24 +11,29 @@
    <ul>
       {% for topic in topics %}
         <li>
-            <h3><!--style the topic as an h3 element to make them a little larger on the page.-->
+            <!--style the topic as an h2 element to make them a little larger on the page.-->
                 <a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a>
-            </h3>
+            
         </li>
-    {% empty %}
-        <li> No topics have been added yet. </li>
-
-    {% endfor %}
+      {% endfor %}
+    
 
         
 
         
    </ul>
 
-{% if show_create_button %}
-<a href="{% url 'learning_logs:new_topic' %}" class="btn btn-primary">
-Add New Topic   
-</a>
+{% else %}
+
+<div class="empty-state">
+    <h3>Welcome, {{ user.username }}!</h3>
+    <p>You have not created any topics yet.</p>
+    <a href="{% url 'learning_logs:new_topic' %}" class="btn btn-primary">
+        Create  Your First Topic
+    </a>
+</div>
+
+
 {% endif %}
 
 {% endblock content %} 

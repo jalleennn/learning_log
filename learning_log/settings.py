@@ -161,9 +161,9 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # My settings
-LOGIN_URL = 'login'  # URL name, not path
-LOGIN_REDIRECT_URL = 'topics'
-LOGOUT_REDIRECT_URL = 'index'
+LOGIN_URL = 'users:login'  # URL name, not path
+LOGIN_REDIRECT_URL = 'learning_logs:topics'
+LOGOUT_REDIRECT_URL = 'learning_logs:index'
 # now when an unauthenticated user request for a page protected by the decorator '@login required",
 # Django directs the user to the URL defined by the LOGIN_URL in settings.py
 

@@ -22,13 +22,20 @@ def logoutView(request):
 
 def register(request): # the register function checks if the we are responding to a post request or a get request. If it is a GET request we create a blank instance of the UserCreationForm class.
     """Register a new user."""
+    
+    if request.user.is_authenticated:
+        return redirect('learning_logs:topics')
+
     if request.method == 'POST':
         # Display blank registration form.
         form = UserCreationForm(request.POST)
+
         if form.is_valid():
             user = form.save()
+
             login(request, user)
-            messages.success(request, f'Welcome {user.username}! Add your first topic below.')
+
+            messages.success(request, "Registration sucessful! Start by creating your first topic.")
             return redirect('learning_logs:topics')
     else:
         # Process completed form.
@@ -41,20 +48,24 @@ def register(request): # the register function checks if the we are responding t
 def new_topic(request):
     if request.method == 'POST':
         form = TopicForm(request.POST)
+
         if form.is_valid():
             topic = form.save(commit=False)
             topic.owner = request.user  # associate topic with logged-in user
             topic.save()
-            return redirect('topics')  # redirect to topic list
+
+            return redirect('learning_logs:topics')  # redirect to topic list
+    
     else:
         form = TopicForm()
-    return render(request, 'new_topic.html', {'form': form})
+
+    return render(request, 'learning_logs/new_topic.html', {'form': form})
 
 # List topics
 @login_required
 def topics(request):
     topics = Topic.objects.filter(owner=request.user).order_by('-date_added')
-    return render(request, 'topics.html', {'topics': topics, 'show_create_button': True})
+    return render(request, 'learning_logs/topics.html', {'topics': topics, 'show_create_button': True})
  
 
 

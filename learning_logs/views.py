@@ -30,8 +30,7 @@ def topic(request, topic_id): #view functions can accept additional parameters.
     """Show a single topic and all its entries."""
     topic = Topic.objects.get(id=topic_id) # retrieve the topic with the given id.
     # Make sure the topic belongs to the current user.
-    if topic.owner != request.user:
-        raise Http404
+    topic = get_object_or_404(Topic, id=topic_id, owner=request.user)
     entries = Entry.objects.filter(topic=topic).order_by('-date_added') # retrieve all entries associated with this topic.
     context = {'topic': topic, 'entries': entries} # store the topics and entries in the dictionary context.
     return render(request, 'learning_logs/topic.html', context)
@@ -66,8 +65,7 @@ def new_entry(request, topic_id): # function new_entry has an topic_id it receiv
     """Add a new entry for a particular topic."""
     topic = Topic.objects.get(id=topic_id) # we need the topic to render the page and process the form.
 
-    if topic.owner != request.user:
-        raise Http404
+    topic = get_object_or_404(Topic, id=topic_id, owner=request.user)
     
     if request.method == 'POST': # check if the request is POST or GET, if GET we create an empty balnk instance.
         # No data submitted; create a blank form.
@@ -77,7 +75,7 @@ def new_entry(request, topic_id): # function new_entry has an topic_id it receiv
             new_entry = form.save(commit=False) # Tells Django to create a new entry object and store in new-entry
             new_entry.topic = topic # set the new entry topic attribute to topic and  pulls the topic from database
             new_entry.save() # saves the entry to the database
-            
+
             return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id])) # redirects the user to the topic page 
     else:
         # POST data submitted ; process data.
@@ -94,8 +92,7 @@ def edit_entry(request, entry_id): # entry object the user wants to edit.
     topic= entry.topic # the topic associated with the entry must align.
 
 
-    if topic.owner != request.user:
-        raise Http404
+    topic = get_object_or_404(Topic, id=entry_id, owner=request.user)
 
     if request.method == 'POST':
         form = EntryForm(instance=entry, data=request.POST)
