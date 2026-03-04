@@ -63,7 +63,7 @@ def new_topic(request):
 @login_required
 def new_entry(request, topic_id): # function new_entry has an topic_id it receives from the url.
     """Add a new entry for a particular topic."""
-    topic = Topic.objects.get(id=topic_id) # we need the topic to render the page and process the form.
+    # we need the topic to render the page and process the form.
 
     topic = get_object_or_404(Topic, id=topic_id, owner=request.user)
     
@@ -76,7 +76,7 @@ def new_entry(request, topic_id): # function new_entry has an topic_id it receiv
             new_entry.topic = topic # set the new entry topic attribute to topic and  pulls the topic from database
             new_entry.save() # saves the entry to the database
 
-            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id])) # redirects the user to the topic page 
+            return redirect('learning_logs:topic', topic_id=topic_id) # redirects the user to the topic page 
     else:
         # POST data submitted ; process data.
         form = EntryForm()
