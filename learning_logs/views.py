@@ -44,15 +44,18 @@ def new_topic(request):
     """Add a new topic."""
     if request.method == 'POST': # determines whether the request is get or post and the request is probably get it retruns a blank form.
         #No data submitted; create a blank form.
-        form =TopicForm() # an instance TopicForm and send it to template in the context dictionary. There was no argument so it creates a blank form that the user can fill out.
+        form =TopicForm(request.POST) # an instance TopicForm and send it to template in the context dictionary. There was no argument so it creates a blank form that the user can fill out.
+
+        if form.is_valid():
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
+
+            return HttpResponseRedirect(reverse('learning_logs:topics'))
     else:
         # POST data submitted; process data.
-        form = TopicForm(request.POST) # make an instnace and return the info submitted by the user.
-        if form.is_valid(): # check the validity of the submitted data. 'is_valid() checks that all the required fields have been filled in.
-            new_topic = form.save(commit=False) # save the form to the database.
-            new_topic.owner = request.user # set the owner attribute of the new topic to the current user.
-            new_topic.save() # if valid, can be saved by writing data from the database.
-            return HttpResponseRedirect(reverse('learning_logs:topics'))
+        form = TopicForm() # make an instance and return the info submitted by the user.
+        
         # Redirects the users to the topics page so the user can see the topic they just entered in the list of topics.
 
     context = {'form': form}
@@ -63,18 +66,23 @@ def new_entry(request, topic_id): # function new_entry has an topic_id it receiv
     """Add a new entry for a particular topic."""
     topic = Topic.objects.get(id=topic_id) # we need the topic to render the page and process the form.
 
+    if topic.owner != request.user:
+        raise Http404
+    
     if request.method == 'POST': # check if the request is POST or GET, if GET we create an empty balnk instance.
         # No data submitted; create a blank form.
-        form = EntryForm() 
-    else:
-        # POST data submitted ; process data.
+        
         form = EntryForm(data= request.POST) # if POST we create POST data from the request object.
         if form.is_valid(): # we then check the validity of the form. if it is valid, set the entry object's topic attribute before saving the database.
             new_entry = form.save(commit=False) # Tells Django to create a new entry object and store in new-entry
             new_entry.topic = topic # set the new entry topic attribute to topic and  pulls the topic from database
             new_entry.save() # saves the entry to the database
-            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id])) # redirects the user to the topic page
-        
+            
+            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id])) # redirects the user to the topic page 
+    else:
+        # POST data submitted ; process data.
+        form = EntryForm()
+    
     context = {'topic': topic, 'form':form}
     return render(request, 'learning_logs/new_entry.html', context)
 # user should to able to see the new entry in the list of entries.
@@ -84,19 +92,27 @@ def edit_entry(request, entry_id): # entry object the user wants to edit.
     """Edit an existing entry."""
     entry = Entry.objects.get(id=entry_id)
     topic= entry.topic # the topic associated with the entry must align.
+
+
     if topic.owner != request.user:
         raise Http404
 
     if request.method == 'POST':
-        # Initial request; pre-fill from with the current entry.
-        form = EntryForm(instance=entry) # display a form prefilled with what the user has entered because of the GET request and the user is able to edit.
+        form = EntryForm(instance=entry, data=request.POST)
+
+        if form.is_valid():
+            form.save()
+
+        return HttpResponseRedirect(
+            reverse('learning_logs:topic', args=[topic.id])
+        )
+
     else:
-        # POST data submitted; process data.
-        form= EntryForm(instance= entry, data=request.POST) # if POST, a form is created based on information linked with entry objects.
-        if form.is_valid(): # check the validity of the form.
-            form.save() # saves it to the database.
-            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id])) # redirect to th etopic page where the user should see the updated version of the entry edited.
-        
-    
-    context = {'entry': entry, 'topic':topic, 'form':form}
+        form = EntryForm(instance=entry)
+    context = {
+        'entry': entry,
+        'topic': topic,
+        'form': form
+    }
+
     return render(request, 'learning_logs/edit_entry.html', context)

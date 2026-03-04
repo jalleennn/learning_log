@@ -29,7 +29,7 @@ def register(request): # the register function checks if the we are responding t
             user = form.save()
             login(request, user)
             messages.success(request, f'Welcome {user.username}! Add your first topic below.')
-            return redirect('learning_logs:new_topic')
+            return redirect('learning_logs:topics')
     else:
         # Process completed form.
         form = UserCreationForm() # if POST request we make an instance based on the submitted data.
@@ -54,7 +54,7 @@ def new_topic(request):
 @login_required
 def topics(request):
     topics = Topic.objects.filter(owner=request.user).order_by('-date_added')
-    return render(request, 'topics.html', {'topics': topics})
+    return render(request, 'topics.html', {'topics': topics, 'show_create_button': True})
  
 
 

@@ -25,6 +25,10 @@
         
    </ul>
 
-   <h3><a href="{% url 'learning_logs:new_topic' %}">Add new topic</h3>
+{% if show_create_button %}
+<a href="{% url 'learning_logs:new_topic' %}" class="btn btn-primary">
+Add New Topic   
+</a>
+{% endif %}
 
 {% endblock content %} 
