@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, Http404 # import Http404 so if the topic owner doesn't much the requested user it calls an page not found.And so the users can be redirected back to the topics page after they have submitted their topics
 # reverse function with Django will generate a URL when the page is requested.
 from django.urls import reverse
