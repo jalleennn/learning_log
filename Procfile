@@ -1,1 +1,0 @@
-web: gunicorn learning_log.wsgi --bind 0.0.0.0:$PORT
